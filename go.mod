@@ -1,3 +1,3 @@
-module github.com/ainurqa95/go-todo-list-app
+module github.com/ainurqa95/todo-list-app
 
 go 1.15
