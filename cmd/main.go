@@ -4,7 +4,7 @@ import (
 	"os"
 
 	"github.com/ainurqa95/todo-list-app"
-	"github.com/ainurqa95/todo-list-app/pkg/handler"
+	"github.com/ainurqa95/todo-list-app/pkg/handlers"
 	"github.com/ainurqa95/todo-list-app/pkg/repositories"
 	"github.com/ainurqa95/todo-list-app/pkg/services"
 	"github.com/joho/godotenv"
@@ -37,7 +37,7 @@ func main() {
 
 	repos := repositories.NewRepository(db)
 	services := services.NewService(repos)
-	handlers := handler.NewHandler(services)
+	handlers := handlers.NewHandler(services)
 	srv := new(todo.Server)
 
 	if err != nil {
