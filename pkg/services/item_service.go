@@ -6,7 +6,8 @@ import (
 )
 
 type ItemManager interface {
-	CreateItem(item todo.TodoItem, userId int, listId int) (int, error)
+	CreateItem(item todo.TodoItem, listId int) (int, error)
+	GetAllItems(listId int, userId int) ([]todo.TodoItem, error)
 }
 
 type ItemService struct {
@@ -17,6 +18,10 @@ func NewItemService(repository repositories.ItemRepository) *ItemService {
 	return &ItemService{itemRepository: repository}
 }
 
-func (itemService *ItemService) CreateItem(item todo.TodoItem, userId int, listId int) (int, error) {
-	return itemService.itemRepository.Create(item, userId, listId)
+func (itemService *ItemService) CreateItem(item todo.TodoItem, listId int) (int, error) {
+	return itemService.itemRepository.Create(item, listId)
+}
+
+func (itemService *ItemService) GetAllItems(listId int, userId int) ([]todo.TodoItem, error) {
+	return itemService.itemRepository.GetAll(userId, listId)
 }

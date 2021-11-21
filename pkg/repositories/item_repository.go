@@ -8,7 +8,8 @@ import (
 )
 
 type ItemRepository interface {
-	Create(item todo.TodoItem, userId int, listId int) (int, error)
+	Create(item todo.TodoItem, listId int) (int, error)
+	GetAll(userId int, listId int) ([]todo.TodoItem, error)
 }
 
 type DBListItemRepository struct {
@@ -19,7 +20,7 @@ func NewDbListItemRepository(db *sqlx.DB) *DBListItemRepository {
 	return &DBListItemRepository{db: db}
 }
 
-func (itemRepository *DBListItemRepository) Create(item todo.TodoItem, userId int, listId int) (int, error) {
+func (itemRepository *DBListItemRepository) Create(item todo.TodoItem, listId int) (int, error) {
 	transaction, err := itemRepository.db.Begin()
 	if err != nil {
 		return 0, err
@@ -43,4 +44,15 @@ func (itemRepository *DBListItemRepository) Create(item todo.TodoItem, userId in
 	}
 
 	return itemId, transaction.Commit()
+}
+
+func (itemRepository *DBListItemRepository) GetAll(userId int, listId int) ([]todo.TodoItem, error) {
+
+	var items []todo.TodoItem
+
+	query := fmt.Sprintf("select ti.* from lists_items li join todo_items ti on ti.id = li.item_id join users_lists ul on li.list_id = ul.list_id where li.list_id = $1 and ul.user_id = $2")
+
+	err := itemRepository.db.Select(&items, query, listId, userId)
+
+	return items, err
 }
