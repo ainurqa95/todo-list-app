@@ -8,6 +8,19 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Summary Create todo list
+// @Security ApiKeyAuth
+// @Tags lists
+// @Description Create list
+// @ID create-list
+// @Accept  json
+// @Produce  json
+// @Param input body todo.TodoList true "list info"
+// @Success 200 {integer} integer 1
+// @Failure 400,404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /api/lists [post]
 func (handler *Handler) createList(context *gin.Context) {
 
 	var listInput todo.TodoList
@@ -32,6 +45,18 @@ type GetAllListsResponse struct {
 	Lists []todo.TodoList `json:"data"`
 }
 
+// @Summary Get all lists
+// @Security ApiKeyAuth
+// @Tags lists
+// @Description Get all lists
+// @ID get-all-lists
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} GetAllListsResponse
+// @Failure 400,404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /api/lists [get]
 func (handler *Handler) getAllLists(context *gin.Context) {
 	userId := getUserId(context)
 
@@ -46,6 +71,19 @@ func (handler *Handler) getAllLists(context *gin.Context) {
 	})
 }
 
+// @Summary Get list by id
+// @Security ApiKeyAuth
+// @Tags lists
+// @Description Get by list id
+// @ID get-by-list-id
+// @Accept  json
+// @Produce  json
+// @Param id path int true "List id"
+// @Success 200 {object} todo.TodoList
+// @Failure 400,404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /api/lists/{id} [get]
 func (handler *Handler) getListById(context *gin.Context) {
 
 	id, err := strconv.Atoi(context.Param("id"))
@@ -67,6 +105,20 @@ type UpdateListInput struct {
 	Description *string `json:"description"`
 }
 
+// @Summary Update list by id
+// @Security ApiKeyAuth
+// @Tags lists
+// @Description Updates list by id
+// @ID update-list-id
+// @Accept  json
+// @Produce  json
+// @Param id path int true "List id"
+// @Param input body UpdateListInput true "update list info"
+// @Success 200 {string} status "ok"
+// @Failure 400,404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /api/lists/{id} [put]
 func (handler *Handler) updateList(context *gin.Context) {
 	id, err := strconv.Atoi(context.Param("id"))
 	if err != nil {
