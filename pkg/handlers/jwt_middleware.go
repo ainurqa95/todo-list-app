@@ -1,10 +1,9 @@
 package handlers
 
 import (
+	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
-
-	"github.com/gin-gonic/gin"
 )
 
 const (
@@ -20,12 +19,10 @@ func (handler *Handler) userIdentity(context *gin.Context) {
 	}
 
 	headerParts := strings.Split(header, " ")
-	if len(headerParts) != 2 || headerParts[0] != "Bearer" {
-		newErrorResponse(context, http.StatusUnauthorized, headerParts[0])
+	if headerParts[0] != "Bearer" || len(headerParts) != 2 {
 		newErrorResponse(context, http.StatusUnauthorized, "invalid auth header")
 		return
 	}
-
 	userId, err := handler.service.Authorization.ParseToken(headerParts[1])
 	if err != nil {
 		newErrorResponse(context, http.StatusUnauthorized, err.Error())

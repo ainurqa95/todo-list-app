@@ -17,12 +17,6 @@ const (
 	tokenTTL   = 12 * time.Hour
 )
 
-type Authorization interface {
-	CreateUser(user todo.User) (int, error)
-	GenerateToken(username string, password string) (string, error)
-	ParseToken(accessToken string) (int, error)
-}
-
 type AuthService struct {
 	userRepository repositories.UserRepository
 }

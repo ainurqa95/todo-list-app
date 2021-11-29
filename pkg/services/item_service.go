@@ -5,11 +5,6 @@ import (
 	"github.com/ainurqa95/todo-list-app/pkg/repositories"
 )
 
-type ItemManager interface {
-	CreateItem(item todo.TodoItem, listId int) (int, error)
-	GetAllItems(listId int, userId int) ([]todo.TodoItem, error)
-}
-
 type ItemService struct {
 	itemRepository repositories.ItemRepository
 }

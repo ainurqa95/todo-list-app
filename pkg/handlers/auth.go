@@ -22,7 +22,7 @@ import (
 func (h *Handler) signUp(context *gin.Context) {
 	var input todo.User
 	if err := context.BindJSON(&input); err != nil {
-		newErrorResponse(context, http.StatusBadRequest, err.Error())
+		newErrorResponse(context, http.StatusBadRequest, "invalid input body")
 		return
 	}
 	id, err := h.service.Authorization.CreateUser(input)
@@ -57,7 +57,7 @@ func (h *Handler) signIn(context *gin.Context) {
 	var input signInInput
 
 	if err := context.BindJSON(&input); err != nil {
-		newErrorResponse(context, 402, err.Error())
+		newErrorResponse(context, 402, "invalid input body")
 		return
 	}
 	token, err := h.service.Authorization.GenerateToken(input.Username, input.Password)
