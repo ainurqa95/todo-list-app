@@ -35,7 +35,6 @@ func (handler *Handler) userIdentity(context *gin.Context) {
 func getUserId(context *gin.Context) int {
 	userId, ok := context.Get(userCtx)
 	if !ok {
-		newErrorResponse(context, http.StatusUnauthorized, "user not found")
 		return 0
 	}
 	return userId.(int)

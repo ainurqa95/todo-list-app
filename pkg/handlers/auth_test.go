@@ -94,3 +94,4 @@ func TestHandler_signUp(t *testing.T) {
 		})
 	}
 }
+

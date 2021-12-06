@@ -46,11 +46,11 @@ func TestJwt_UserIdentity(t *testing.T) {
 			expectedResponseBody: `{"message":"empty auth header"}`,
 		},
 		{
-			name:        "Wrong bearer",
-			headerName:  "Authorization",
-			headerValue: "Bersre token",
-			token:       "token",
-			mockBehavior: func(r *mock_service.MockAuthorization, token string) {},
+			name:                 "Wrong bearer",
+			headerName:           "Authorization",
+			headerValue:          "Bersre token",
+			token:                "token",
+			mockBehavior:         func(r *mock_service.MockAuthorization, token string) {},
 			expectedStatusCode:   401,
 			expectedResponseBody: `{"message":"invalid auth header"}`,
 		},
@@ -96,6 +96,38 @@ func TestJwt_UserIdentity(t *testing.T) {
 			// Asserts
 			assert.Equal(t, recorder.Code, test.expectedStatusCode)
 			assert.Equal(t, recorder.Body.String(), test.expectedResponseBody)
+		})
+	}
+}
+func TestHandler_getUser(t *testing.T) {
+	var getContext = func(id int) *gin.Context {
+		ctx := &gin.Context{}
+		ctx.Set(userCtx, id)
+		return ctx
+	}
+
+	testTable := []struct {
+		name       string
+		ctx        *gin.Context
+		id         int
+		shouldFail bool
+	}{
+		{
+			name: "Ok",
+			ctx:  getContext(1),
+			id:   1,
+		},
+		{
+			name: "Empty",
+			ctx:  &gin.Context{},
+			id:   0,
+		},
+	}
+
+	for _, test := range testTable {
+		t.Run(test.name, func(t *testing.T) {
+			id := getUserId(test.ctx)
+			assert.Equal(t, id, test.id)
 		})
 	}
 }

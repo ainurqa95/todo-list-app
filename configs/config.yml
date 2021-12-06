@@ -2,7 +2,7 @@ port: "8001"
 
 db:
     username: "default"
-    host: "localhost"
+    host: "db"
     port: "5432"
-    dbname: "go_todo_list"
+    dbname: "go_todo_app"
     sslmode: "disable"
